@@ -1,0 +1,16 @@
+#!/usr/bin/env ruby
+
+$: << File.dirname(__FILE__) + "/../lib/flash_duel"
+
+require "engine"
+require "board"
+require "bot"
+
+$: << "./bots"
+Dir["bots/*.rb"].each { |b| require b }
+
+include FlashDuel
+
+game = Engine.new(Kernel.const_get(ARGV.shift).new, Kernel.const_get(ARGV.shift).new)
+game.run
+puts "AND TEH WINNER IS: #{game.winner}"
