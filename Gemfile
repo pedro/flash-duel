@@ -1,3 +1,9 @@
 source 'http://rubygems.org'
 
-gem 'rspec'
+group 'web' do
+  gem 'sinatra'
+end
+
+group 'test' do
+  gem 'rspec'
+end

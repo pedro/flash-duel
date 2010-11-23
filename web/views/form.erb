@@ -1,0 +1,14 @@
+<h1>Flash Duel</h1>
+
+<% if @game %>
+  AND TEH WINNER IS:
+  <%= @winner %>
+<% end %>
+
+<form method="post" action="/game">
+  <textarea name="p1" rows="30" cols="60"><%= params[:p1] %></textarea>
+  VS
+  <textarea name="p2" rows="30" cols="60"><%= params[:p2] %></textarea>
+  <br />
+  <input type="submit" value="FIGHT!" />
+</form>

@@ -8,12 +8,9 @@ require "bot"
 
 include FlashDuel
 
-def load_player(file)
-  m = Module.new
-  m.class_eval(File.read(file))
-  m.const_get(m.constants.first).new
-end
+p1 = Engine.load_player File.read(ARGV.shift)
+p2 = Engine.load_player File.read(ARGV.shift)
 
-game = Engine.new(load_player(ARGV.shift), load_player(ARGV.shift))
+game = Engine.new(p1, p2)
 game.run
 puts "AND TEH WINNER IS: #{game.winner}"
