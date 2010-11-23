@@ -145,6 +145,12 @@ describe "Flash Duel" do
           game.step
         end
 
+        it "leaves the player with less cards after a successful block" do
+          p2.should_receive(:respond).and_return [:block, [5, 5]]
+          game.step
+          game.hands[p2].should have(3).cards
+        end
+
         it "doesn't allow retreat" do
           p2.should_receive(:respond).and_return [:retreat, 2]
           lambda { game.step }.should raise_error(FlashDuel::BadResponse)
