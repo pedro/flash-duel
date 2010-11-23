@@ -50,17 +50,6 @@ describe "Flash Duel" do
       lambda { game.step }.should raise_error(FlashDuel::BadMove)
     end
 
-    it "cannot dash with only one card" do
-      p1.should_receive(:play).and_return [:dash, 1]
-      lambda { game.step }.should raise_error(FlashDuel::BadMove)
-    end
-
-    it "cannot dash attacking with different cards" do
-      game.hands[p1] = [1, 2, 3, 4, 5]
-      p1.should_receive(:play).and_return [:dash, [1, 2, 4]]
-      lambda { game.step }.should raise_error(FlashDuel::BadMove)
-    end
-
     context "moving" do
       it "moves the player on the board" do
         p1.should_receive(:play).and_return [:move, 5]
@@ -176,6 +165,16 @@ describe "Flash Duel" do
 
       it "validates the distance" do
         p1.should_receive(:play).and_return [:strike, [1, 5, 5]]
+        lambda { game.step }.should raise_error(FlashDuel::BadMove)
+      end
+
+      it "cannot dash with only one card" do
+        p1.should_receive(:play).and_return [:strike, 1]
+        lambda { game.step }.should raise_error(FlashDuel::BadMove)
+      end
+
+      it "cannot dash attacking with different cards" do
+        p1.should_receive(:play).and_return [:strike, [1, 2, 4]]
         lambda { game.step }.should raise_error(FlashDuel::BadMove)
       end
 
