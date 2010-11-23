@@ -130,6 +130,11 @@ describe "Flash Duel" do
         lambda { game.step }.should raise_error(FlashDuel::BadMove)
       end
 
+      it "cannot use different cards" do
+        p1.should_receive(:play).and_return [:attack, [1, 2]]
+        lambda { game.step }.should raise_error(FlashDuel::BadMove)
+      end
+
       context "responding" do
         before do
           p1.should_receive(:play).and_return [:attack, [5, 5]]
