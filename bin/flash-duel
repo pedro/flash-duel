@@ -8,11 +8,11 @@ require "bot"
 
 include FlashDuel
 
-def load_player(fname)
-  name = File.basename(fname).gsub(/\..*/, '')
+def load_player(fname, id)
+  name = "#{id}-" + File.basename(fname).gsub(/\..*/, '')
   Engine.load_player File.read(fname), name
 end
 
-game = Engine.new(load_player(ARGV.shift), load_player(ARGV.shift))
+game = Engine.new(load_player(ARGV.shift, "p1"), load_player(ARGV.shift, "p2"))
 game.run
 puts "AND TEH WINNER IS: #{game.winner}"
