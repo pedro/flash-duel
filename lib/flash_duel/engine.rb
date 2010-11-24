@@ -1,6 +1,6 @@
 module FlashDuel
 
-  class PlayerException < Exception
+  class PlayerError < Exception
     attr_accessor :player
 
     def initialize(player, message=nil)
@@ -8,8 +8,8 @@ module FlashDuel
     end
   end
 
-  class BadMove < PlayerException; end
-  class BadResponse < PlayerException; end
+  class BadMove < PlayerError; end
+  class BadResponse < PlayerError; end
 
   class Engine
 
