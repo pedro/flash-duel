@@ -29,6 +29,7 @@ Your bot can be defined in any class. It must respond to two methods:
 * `board` is a wrapper to game board with some conveniency methods:
   
   `board.distance` is the distance between the two players.
+  
   `board.on_edge?(self)` tells you whether you're on the edge of it.
 
 * `attack` is the attacking hand, represented in an Array. eg: `[3, 3]`
@@ -40,12 +41,14 @@ For each of these methods, you need to respond with an array containing
 an action, and one or more cards.
 
 Valid actions:
+
 * `[:move, 5]`
 * `[:push, 3]`
 * `[:attack, [4, 4]]`
 * `[:strike, [3, 4]]`
 
 Valid responses:
+
 * `[:retreat, 1]`
 * `[:block, [4, 4]]`
 
@@ -72,16 +75,13 @@ TODO
 * Enhance the web api / provide some sort of tournament.
 
 
-Reference
----------
-
-[1]: http://www.sirlingames.com/collections/flash-duel "Flash Duel"
-[2]: http://www.sirlin.net/fd/rules                    "Flash Duel Rules (PDF)"
-
-
 About
 -----
 
 Written by Pedro Belo.
 
 Licensed as GPLv2 - once this gets to be the next eSport I'll want my share.
+
+
+[1]: http://www.sirlingames.com/collections/flash-duel "Flash Duel"
+[2]: http://www.sirlin.net/fd/rules                    "Flash Duel Rules (PDF)"
