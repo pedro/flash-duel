@@ -13,10 +13,14 @@ module FlashDuel
 
   class Engine
 
-    def self.load_player(contents)
+    def self.load_player(contents, name)
       m = Module.new
       m.class_eval(contents)
-      m.const_get(m.constants.first).new
+      klass = m.const_get(m.constants.first)
+      klass.send(:define_method, :to_s) do
+        name
+      end
+      klass.new
     end
 
     attr_accessor :p1, :p2, :board, :first_player, :current, :winner, :deck, :hands, :draw

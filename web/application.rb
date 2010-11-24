@@ -10,8 +10,8 @@ module FlashDuel
     end
 
     post "/game" do
-      p1 = FlashDuel::Engine.load_player(params[:p1])
-      p2 = FlashDuel::Engine.load_player(params[:p2])
+      p1 = FlashDuel::Engine.load_player(params[:p1], "p1")
+      p2 = FlashDuel::Engine.load_player(params[:p2], "p2")
       @game = FlashDuel::Engine.new(p1, p2)
       @game.run
 
