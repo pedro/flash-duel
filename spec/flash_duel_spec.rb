@@ -229,5 +229,39 @@ describe "Flash Duel" do
         end
       end
     end
+
+    context "time over" do
+      before do
+        game.deck = []
+        game.board.pos = { p1 => 1, p2 => 5 }
+        game.hands = { p1 => [1, 2], p2 => [2] }
+        game.current = p1
+        p1.should_receive(:play).and_return [:move, 1]
+      end
+
+      it "has a winner if a player can attack the other" do
+        game.hands[p2] = [3]
+        game.step
+        game.winner.should == p2
+      end
+
+      it "has a winner if a player can dash strike the other" do
+        game.hands[p2] = [1, 2]
+        game.step
+        game.winner.should == p2
+      end
+
+      it "otherwise the winner is whoever advanced most" do
+        game.step
+        game.winner.should == p2
+      end
+
+      it "if they both advanced the same, it's a draw" do
+        game.board.pos = { p1 => 4, p2 => 14 }
+        game.step
+        game.winner.should be_nil
+        game.should be_draw
+      end
+    end
   end
 end

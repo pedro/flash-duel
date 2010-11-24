@@ -19,6 +19,15 @@ module FlashDuel
       (a - b).abs
     end
 
+    def furthest_player
+      d1 = position(p1) -1
+      d2 = 18 -position(p2)
+
+      return p1 if d1 > d2
+      return p2 if d2 > d1
+      nil # same
+    end
+
     def on_edge?(player)
       [1, 18].include? pos[player]
     end

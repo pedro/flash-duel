@@ -1,13 +1,15 @@
 module FlashDuel
 
-  class PlayerError < RuntimeError
-    def initialize(player, message)
+  class PlayerException < Exception
+    attr_accessor :player
+
+    def initialize(player, message=nil)
       super "Wrong action from #{player}: #{message}"
     end
   end
 
-  class BadMove < PlayerError; end
-  class BadResponse < PlayerError; end
+  class BadMove < PlayerException; end
+  class BadResponse < PlayerException; end
 
   class Engine
 
@@ -17,11 +19,11 @@ module FlashDuel
       m.const_get(m.constants.first).new
     end
 
-    attr_accessor :p1, :p2, :board, :first_player, :current, :winner, :deck, :hands
+    attr_accessor :p1, :p2, :board, :first_player, :current, :winner, :deck, :hands, :draw
 
     def initialize(p1, p2)
-      @p1    = p1
-      @p2    = p2
+      @p1 = p1
+      @p2 = p2
     end
 
     def board
@@ -41,10 +43,10 @@ module FlashDuel
 
     def run
       log "initializing match"
-      step while !winner
-    rescue Exception => e
-      puts "#{current} FAILED: #{e.message}"
-      self.winner = other_player(current)
+      step while !winner && !draw
+    rescue PlayerError => e
+      puts "#{e.player} FAILED: #{e.message}"
+      self.winner = other_player(e.player)
     end
 
     def step
@@ -86,14 +88,37 @@ module FlashDuel
       end
 
       while hand.size < 5
-        if deck.empty?
-          raise "TIME-OVER!"
-        else
-          hand << deck.pop
-        end
+        return time_over! if deck.empty?
+        hand << deck.pop
       end
 
       self.current = other
+    end
+
+    def time_over!
+      log "time-over!"
+      log " -- #{can_attack?(p1)} / #{can_attack?(p2)}"
+      if can_attack?(p1) && !can_attack?(p2)
+        self.winner = p1
+      elsif can_attack?(p2) && !can_attack?(p1)
+        self.winner = p2
+      elsif furthest = board.furthest_player
+        self.winner = furthest
+      else
+        self.draw = true
+      end
+    end
+
+    def can_attack?(player)
+      hand     = hands[player]
+      distance = board.distance
+      return true if hand.any? { |c| c == distance }
+      hand.each do |b|
+        hand.each do |a|
+          return true if a + b == distance
+        end
+      end
+      return false
     end
 
     def players
@@ -150,6 +175,10 @@ module FlashDuel
     def log(msg)
       return unless ENV.has_key?('DEBUG')
       puts msg
+    end
+
+    def draw?
+      draw
     end
   end
 end
