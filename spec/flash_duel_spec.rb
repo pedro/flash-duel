@@ -205,6 +205,12 @@ describe "Flash Duel" do
           game.board.pos[p2].should == 17
         end
 
+        it "skips the turn of the player retreating" do
+          p2.should_receive(:respond).and_return [:retreat, 2]
+          game.step
+          game.current.should == p1
+        end
+
         it "adjusts the movement on retreat when close to the beggining of the board" do
           p2.should_receive(:respond).and_return [:retreat, 5]
           game.step

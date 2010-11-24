@@ -54,6 +54,7 @@ module FlashDuel
     end
 
     def step
+      @skip_turn = false
       self.current ||= first_player
       other = other_player(current)
       hand  = hands[current]
@@ -84,6 +85,7 @@ module FlashDuel
               raise BadResponse.new(other, "cannot retreat from attack") if action == :attack
               raise BadResponse.new(other, "cannot retreat, already on the edge") if board.on_edge?(other)
               board.move(other, -cards_response.first, :respect_limits => true)
+              @skip_turn = true
             when :block
               value_response = cards_response.first
               raise BadResponse.new(current, "cannot block #{value} with #{value_response}") if value != value_response
@@ -96,7 +98,7 @@ module FlashDuel
         hand << deck.pop
       end
 
-      self.current = other
+      self.current = other unless @skip_turn
     end
 
     def time_over!
