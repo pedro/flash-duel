@@ -24,12 +24,32 @@ class RandomBot
       actions += hand.map { |card| [:push, card] }
     end
 
+    qtys = hand.inject(Hash.new(0)) { |h, card| h[card] += 1; h }
+    qty  = qtys[board.distance]
+
     # check if we can attack
-    hand.each do |card|
-      actions += [[:attack, card]] if board.distance == card
+    if qty > 0
+      actions += (1..qty).map do |multiplier|
+        [:attack, [board.distance] * multiplier]
+      end
     end
 
-    actions
+    # check if we can dash strike
+    hand.each_with_index do |base, i|
+      next if base >= board.distance
+      hand.each_with_index do |attack, j|
+        next if i == j
+        qty = qtys[attack]
+        qty -= 1 if base == attack
+        if base + attack == board.distance
+          actions += (1..qty).map do |multiplier|
+            [:strike, [base] + [attack] * multiplier]
+          end
+        end
+      end
+    end
+
+    actions.uniq
   end
 
   def available_responses(action, attack, hand, board)
@@ -39,7 +59,7 @@ class RandomBot
     value = attack.first
     defense = hand.select { |c| c == value }
 
-    if attack.size == defense.size
+    if attack.size <= defense.size
       responses += [[:block, defense[0, attack.size]]]
     end
 
@@ -48,6 +68,6 @@ class RandomBot
       responses += hand.map { |card| [:retreat, card] }
     end
 
-    responses
+    responses.uniq
   end
 end
