@@ -4,6 +4,7 @@ module FlashDuel
     attr_accessor :player
 
     def initialize(player, message=nil)
+      @player = player
       super "Wrong action from #{player}: #{message}"
     end
   end
