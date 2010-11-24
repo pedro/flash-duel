@@ -52,6 +52,8 @@ Valid responses:
 * `[:retreat, 1]`
 * `[:block, [4, 4]]`
 
+Check for sample bots in the `bots` folder.
+
 
 Playing games
 -------------
