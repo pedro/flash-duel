@@ -77,3 +77,11 @@ Reference
 
 [1]: http://www.sirlingames.com/collections/flash-duel "Flash Duel"
 [2]: http://www.sirlin.net/fd/rules                    "Flash Duel Rules (PDF)"
+
+
+About
+-----
+
+Written by Pedro Belo.
+
+Licensed as GPLv2 - once this gets to be the next eSport I'll want my share.
